@@ -1,0 +1,34 @@
+server:
+   port: 8080
+
+spring:
+  application:
+    name: DeliveryApplication
+  datasource:
+    url: jdbc:mysql://localhost:3306/fordelivery
+    username: root
+    password: SDGw2d35523AafAF2e1qq09nm
+  jpa:
+    hibernate:
+      properties:
+        dialect: org.hibernate.dialect.MySQLDialect
+      ddl-auto: update
+  show-sql: true
+  redis:
+    host: localhost
+    port: 6379
+    serializer:
+      json:
+        enabled: true
+    logging:
+      level:
+        org.springframework.data.redis: DEBUG
+  jackson:
+    date-format: yyyy-MM-dd'T'HH:mm:ss
+    time-zone: UTC
+jwt:
+  secret: bW8xTmZ6TEzZTl3hf0ds546uj5ghf3dre56ty6dr5ese4565787okk3jh5fJGJn9nk8f2VeR18tdqJs3kdNjx5ktGb6ajT2pczRf
+
+mail-sender:
+  enabled: true # ${MAIL_SERVICE_ENABLED}
+
