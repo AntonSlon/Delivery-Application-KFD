@@ -99,6 +99,6 @@ class UserAuthServiceAuthImpl(
         return UserLoginResponse(status = "200", "Success logged in")
     }
 
-    override fun getAll(): List<User> = userDAO.findAll()
+    //override fun getAll(): List<User> = userDAO.findAll()
 
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/admin")
 class AdminController(
-    private val adminService: AdminServiceImpl
+    private val adminService: AdminService
 ) {
     @GetMapping("/users")
     fun getUsers() = adminService.getUsers()

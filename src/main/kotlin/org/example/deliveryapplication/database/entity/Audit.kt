@@ -1,6 +1,7 @@
 package org.example.deliveryapplication.database.entity
 
 import jakarta.persistence.*
+import org.hibernate.annotations.CreationTimestamp
 import org.springframework.data.annotation.CreatedBy
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedBy
@@ -9,29 +10,22 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.time.LocalDateTime
 
 
-@EntityListeners(AuditingEntityListener::class)
+//@EntityListeners(AuditingEntityListener::class)
+@Entity
 @Table(name = "audit_log")
 class Audit(
-    @CreatedBy
-    @Column(name = "created_by")
-    var createdBy: Long? = null,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0,
 
-    @CreatedDate
-    @Column(name = "created_date")
-    var createdDate: LocalDateTime? = null,
+    @Column(name = "id_user")
+    val userId: Long = 0,
 
-    @LastModifiedBy
-    @Column(name = "updated_date")
-    var updatedDate: LocalDateTime? = null,
+    @Column(name = "action")
+    val action: String = "",
 
-    @LastModifiedDate
-    @Column(name = "updated_at")
-    var changedAt: LocalDateTime? = null,
-
-    @Column(name = "entity_id")
-    var entity: Long? = null,
-
-    @Column(name = "entity_name")
-    var entityName: String? = null,
+    @Column(name = "created_at")
+    @CreationTimestamp
+    val createdAt: LocalDateTime = LocalDateTime.now()
 
 )

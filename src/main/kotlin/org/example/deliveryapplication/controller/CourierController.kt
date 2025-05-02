@@ -22,7 +22,7 @@ class CourierController(
 
     @GetMapping("/orders/me")
     fun getCompletedOrders(): CourierCompletedOrderListResponse =
-       courierService.completedOrderList()
+       courierService.getCompletedOrderList()
 
     @GetMapping("/balance")
     fun getBalance(): Int = courierService.getBalance()

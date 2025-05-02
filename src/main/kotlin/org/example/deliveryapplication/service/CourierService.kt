@@ -17,7 +17,7 @@ interface CourierService {
     fun acceptOrder(orderId: Long): CourierAcceptOrderResponse
     fun updateOrderList(): CourierUpdateOrderListResponse //MutableList<CourierUpdateOrderListResponse>
     fun updateCurrentOrderStatus()
-    fun completedOrderList(): CourierCompletedOrderListResponse
+    fun getCompletedOrderList(): CourierCompletedOrderListResponse
     fun getBalance(): Int
     fun getMyScore(): CourierScoreRequest
     fun selectVehicle(customerSelectVehicleRequest: CustomerSelectVehicleRequest)

@@ -92,7 +92,6 @@ class CustomerServiceImpl(
         return CustomerConfirmOrderResponse("Заказ успешно создан")
     }
 
-    //Пофиксить
     override fun feedbackLastOrder(customerFeedbackRequest: CustomerFeedbackRequest) {
         val order = orderDAO.findByCustomerIdAndStatus(getPrincipal().id, OrderStatus.DELIVERED.name) // orderList
 

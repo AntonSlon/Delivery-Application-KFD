@@ -31,4 +31,5 @@ jwt:
 
 mail-sender:
   enabled: true # ${MAIL_SERVICE_ENABLED}
+  secret: gnqx dxaw qoai icjk
 

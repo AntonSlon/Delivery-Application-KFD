@@ -76,7 +76,7 @@ dependencies {
 
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign:4.2.0")
 
-
+    implementation("org.aspectj:aspectjweaver:1.9.2")
 }
 
 kotlin {

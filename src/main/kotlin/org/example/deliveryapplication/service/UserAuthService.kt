@@ -13,6 +13,6 @@ import org.springframework.security.core.userdetails.UserDetailsService
 interface UserAuthService{
     fun register(request: UserRegisterRequest): UserRegisterResponse
     fun confirmRegister(uuid: String): AuthCodeResponse
-    fun getAll(): List<User> //Заменить потом в админскую панель, user не имеет прав
+    //fun getAll(): List<User> //Заменить потом в админскую панель, user не имеет прав
     fun login(request: UserLoginRequest): UserLoginResponse
 }

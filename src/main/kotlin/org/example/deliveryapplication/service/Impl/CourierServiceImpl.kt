@@ -80,7 +80,7 @@ class CourierServiceImpl(
         return CourierUpdateOrderListResponse(orders)
     }
 
-    override fun completedOrderList(): CourierCompletedOrderListResponse {
+    override fun getCompletedOrderList(): CourierCompletedOrderListResponse {
         val orderList = orderDAO.findByStatusAndCourierId(OrderStatus.DELIVERED.name, getPrincipal().id)
         println("$orderList <-------------------------------------")
         val orders = mutableListOf<CourierCompletedResponse>()
