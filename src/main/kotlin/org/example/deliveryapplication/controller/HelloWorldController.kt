@@ -19,30 +19,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/test")
-class HelloWorldController(val graphhopperService: GraphhopperService,
-    val nominatimService: NominatimService, val courierDAO: CourierDAO,
-    val userDao: UserDAO,
-    val adminService: AdminServiceImpl
-) {
+class HelloWorldController {
     @GetMapping
     fun test(): String = "Hello World"
-
-//    @GetMapping("/routeTest")
-//    fun routeTest() = graphhopperService.getRoute(
-//            listOf("52.533825,13.431846", "52.507503,13.404037", "52.518778,13.418783"),
-//            "foot", "de", false)
-//
-//    @GetMapping("/encodeTest")
-//    fun encodeTest() = nominatimService.geocodeAddress("Москва,Красная площадь")
-//
-//    @Transactional
-//    @GetMapping("/courierCreateTest")
-//    fun create(){
-//        val user = userDao.findByEmail("sdasa346573@yandex.ru")!!
-//        courierDAO.save(Courier(404 ,"52.533825,13.404037", UserStatus.ONLINE.name, "", user = user))
-//    }
-//
-//    @GetMapping("/get")
-//    fun getUser(@RequestParam id: Long) = adminService.getUserByID(id)
-
 }
