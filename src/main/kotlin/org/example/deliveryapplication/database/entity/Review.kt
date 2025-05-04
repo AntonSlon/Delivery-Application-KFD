@@ -2,7 +2,6 @@ package org.example.deliveryapplication.database.entity
 
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
-import org.springframework.data.annotation.CreatedBy
 import java.time.LocalDateTime
 
 @Entity

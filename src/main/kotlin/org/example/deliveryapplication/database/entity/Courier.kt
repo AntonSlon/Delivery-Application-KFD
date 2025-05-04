@@ -2,8 +2,6 @@ package org.example.deliveryapplication.database.entity
 
 import jakarta.persistence.*
 import org.example.deliveryapplication.model.courier.Vehicle
-import org.springframework.data.domain.AuditorAware
-import java.awt.Point
 
 
 @Entity

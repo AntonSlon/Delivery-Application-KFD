@@ -2,7 +2,6 @@ package org.example.deliveryapplication.controller
 
 import jakarta.servlet.http.HttpSession
 import jakarta.validation.Valid
-import org.example.deliveryapplication.model.request.CourierUpdateOrderStatusRequest
 import org.example.deliveryapplication.model.request.CustomerConfirmOrderRequest
 import org.example.deliveryapplication.model.request.CustomerCreateOrderRequest
 import org.example.deliveryapplication.model.request.CustomerFeedbackRequest
@@ -10,7 +9,7 @@ import org.example.deliveryapplication.service.CustomerService
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/customer/orders")
+@RequestMapping("/customers/orders")
 class CustomerController(
     private val customerService: CustomerService,
 ) {

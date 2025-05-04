@@ -9,19 +9,18 @@ import org.example.deliveryapplication.model.request.UserUpdateRequest
 import org.example.deliveryapplication.model.response.UserUpdateResponse
 import org.example.deliveryapplication.security.JwtFilter
 import org.example.deliveryapplication.security.JwtParser
-import org.example.deliveryapplication.service.UserService
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 
-
+@Deprecated("Сервис оказался не нужным")
 @Service
 class UserServiceImpl(private val userDAO: UserDAO,
                       private val jwtParser: JwtParser,
                       private val httpServletRequest: HttpServletRequest,
     private val userMapper: UserMapper
-) : UserService {
-    override fun update(request: UserUpdateRequest): UserUpdateResponse {
+){
+    fun update(request: UserUpdateRequest): UserUpdateResponse {
         val token = jwtParser.getTokenFromCookie(httpServletRequest)
         val user = userDAO.findByEmail(jwtParser.extractEmail(token))
 

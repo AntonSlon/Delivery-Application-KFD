@@ -1,16 +1,12 @@
 package org.example.deliveryapplication.controller
 
-import org.example.deliveryapplication.model.request.CourierAcceptOrderRequest
-import org.example.deliveryapplication.model.request.CourierSelectVehicle
-import org.example.deliveryapplication.model.request.CourierUpdateOrderStatusRequest
 import org.example.deliveryapplication.model.request.CustomerSelectVehicleRequest
 import org.example.deliveryapplication.model.response.CourierCompletedOrderListResponse
-import org.example.deliveryapplication.model.response.CourierUpdateOrderListResponse
 import org.example.deliveryapplication.service.CourierService
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/courier")
+@RequestMapping("/couriers")
 class CourierController(
     private val courierService: CourierService,
 ) {
@@ -27,7 +23,7 @@ class CourierController(
     @GetMapping("/balance")
     fun getBalance(): Int = courierService.getBalance()
 
-    @PatchMapping("/orders/update")
+    @PostMapping("/orders/update")
     fun updateOrderStatus() = courierService.updateCurrentOrderStatus()
 
     @PostMapping("/vehicle")

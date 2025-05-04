@@ -1,20 +1,16 @@
 package org.example.deliveryapplication.service.Impl
 
-import io.jsonwebtoken.JwtBuilder
-import io.jsonwebtoken.Jwts
-import jakarta.servlet.http.HttpSession
+
 import org.example.deliveryapplication.Exceptions.IncorrectRatingException
 import org.example.deliveryapplication.Exceptions.OrderIsNull
 import org.example.deliveryapplication.database.entity.Order
 import org.example.deliveryapplication.database.entity.Payment
 import org.example.deliveryapplication.database.entity.Review
-//import org.example.deliveryapplication.database.entity.Review
 import org.example.deliveryapplication.database.repository.*
 import org.example.deliveryapplication.graphhopper.GraphhopperService
 import org.example.deliveryapplication.model.OrderStatus
 import org.example.deliveryapplication.model.PaymentMethod
 import org.example.deliveryapplication.model.PaymentStatus
-import org.example.deliveryapplication.model.request.CourierUpdateOrderStatusRequest
 import org.example.deliveryapplication.model.request.CustomerConfirmOrderRequest
 import org.example.deliveryapplication.model.request.CustomerCreateOrderRequest
 import org.example.deliveryapplication.model.request.CustomerFeedbackRequest
@@ -23,13 +19,7 @@ import org.example.deliveryapplication.model.response.CustomerCreateOrderRespons
 import org.example.deliveryapplication.model.response.CustomerOrderRequest
 import org.example.deliveryapplication.service.CustomerService
 import org.example.deliveryapplication.util.getPrincipal
-import org.springframework.context.annotation.Bean
-import org.springframework.http.HttpStatus
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
-import java.lang.System.currentTimeMillis
-import java.util.*
-import kotlin.math.abs
 
 @Service
 class CustomerServiceImpl(
@@ -71,7 +61,6 @@ class CustomerServiceImpl(
     override fun confirmOrder(customerConfirmOrderRequest: CustomerConfirmOrderRequest): CustomerConfirmOrderResponse {
         val order = orderDAO.findByStatus(OrderStatus.WAITING_FOR_CONFIRM.name)[0]
         println(orderDAO.findByStatus(OrderStatus.WAITING_FOR_CONFIRM.name))
-        println("${order.payment} СТОИМОСТЬ ЗАКАЗА ИЗ БД ________________________")
         val user = userDao.findById(getPrincipal().id).get()
 
         if (customerConfirmOrderRequest.paymentMethod == PaymentMethod.PROFILE_BALANCE.name) {
@@ -79,8 +68,7 @@ class CustomerServiceImpl(
             user.money -= order.payment.cost
             order.payment.paymentMethod = PaymentMethod.PROFILE_BALANCE.name
             order.payment.status = PaymentStatus.PAID.name
-        }
-        else {
+        } else {
             order.payment.paymentMethod = PaymentMethod.CASH.name
             order.payment.status = PaymentStatus.NOT_PAID.name
         }
@@ -116,15 +104,9 @@ class CustomerServiceImpl(
             user.money += order.payment.cost
 
         userDao.save(user)
-        order.status = OrderStatus.CANCELED.name // переводить в Cancelled, а не удалять
+        order.status = OrderStatus.CANCELED.name
         orderDAO.save(order)
     }
-
-//    override fun updateOrder(updateOrderStatusRequest: CourierUpdateOrderStatusRequest) {
-//        val order = orderDAO.findByCustomerId(getPrincipal().id)
-//        order.status = updateOrderStatusRequest.status
-//        orderDAO.save(order)
-//    }
 
     override fun getCurrentOrder(): CustomerOrderRequest {
         val order = orderDAO.findByCustomerIdAndStatus(getPrincipal().id, OrderStatus.IN_PROGRESS.name)

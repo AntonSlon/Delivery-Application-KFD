@@ -1,7 +1,6 @@
 package org.example.deliveryapplication.service.Impl
 
 import org.example.deliveryapplication.database.entity.Order
-//import org.example.deliveryapplication.database.entity.Review
 import org.example.deliveryapplication.database.entity.User
 import org.example.deliveryapplication.database.repository.OrderDAO
 import org.example.deliveryapplication.database.repository.UserDAO

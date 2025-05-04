@@ -8,12 +8,7 @@ import org.springframework.stereotype.Component
 class UserMapper{
     fun updateUser(request: UserUpdateRequest, user: User){
         user.name = request.name
-
         user.email = request.email
-
         user.password = request.password
-
-//        if (user.telephoneNumber != request.telephoneNumber)
-//            user.telephoneNumber = request.telephoneNumber
     }
 }

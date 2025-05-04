@@ -5,7 +5,6 @@ import jakarta.persistence.*
 @Entity(name = "rating")
 class Rating(
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
 
     @Column(name = "total_score")

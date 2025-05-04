@@ -1,26 +1,17 @@
 package org.example.deliveryapplication.service.Impl
 
-import io.jsonwebtoken.JwtBuilder
-import io.jsonwebtoken.Jwts
-import org.example.deliveryapplication.database.entity.Order
-import org.example.deliveryapplication.database.entity.Rating
-import org.example.deliveryapplication.database.entity.Review
 //import org.example.deliveryapplication.database.entity.Rating
+import org.example.deliveryapplication.database.entity.Order
 import org.example.deliveryapplication.database.repository.*
 import org.example.deliveryapplication.graphhopper.GraphhopperService
 import org.example.deliveryapplication.model.OrderStatus
 import org.example.deliveryapplication.model.PaymentMethod
 import org.example.deliveryapplication.model.PaymentStatus
-import org.example.deliveryapplication.model.courier.Vehicle
-import org.example.deliveryapplication.model.request.CourierAcceptOrderRequest
-import org.example.deliveryapplication.model.request.CourierUpdateOrderStatusRequest
 import org.example.deliveryapplication.model.request.CustomerSelectVehicleRequest
 import org.example.deliveryapplication.model.response.*
 import org.example.deliveryapplication.service.CourierService
 import org.example.deliveryapplication.util.getPrincipal
 import org.springframework.stereotype.Service
-import java.lang.System.currentTimeMillis
-import java.net.http.HttpResponse
 import java.util.*
 
 @Service
@@ -35,7 +26,7 @@ class CourierServiceImpl(
 
 ) : CourierService {
     override fun acceptOrder(orderId: Long): CourierAcceptOrderResponse {
-        val order = orderDAO.findById(orderId).get()
+        val order = orderDAO.findByCustomerIdAndStatus(orderId, OrderStatus.WAITING.name).last()
         val courier = courierDAO.findById(getPrincipal().id).get()
 
         order.status = OrderStatus.IN_PROGRESS.name
@@ -55,12 +46,10 @@ class CourierServiceImpl(
     override fun updateOrderList(): CourierUpdateOrderListResponse {
         val orderList = orderDAO.findByStatus(OrderStatus.WAITING.name)
         val orders = mutableListOf<OrderResponse>()
-
         val courier = courierDAO.findById(getPrincipal().id).get()
-
         val vehicle = courier.vehicle.lowercase(Locale.getDefault())
 
-        orderList.forEach { order : Order ->
+        orderList.forEach { order: Order ->
             val route = graphhopperService.getRoute(
                 listOf(courier.currentLocation, order.startAddress, order.endAddress),
                 vehicle,
@@ -69,9 +58,7 @@ class CourierServiceImpl(
             )
             val time = route.paths[0].time
 
-            println("$time ------------------------------------ TIME")
-
-            if (time < 60_000) {
+            if (time < 4_200_000) {
                 orders.add(OrderResponse(order.id, order.status, order.startAddress, order.endAddress, order.comment))
             }
         }
@@ -82,7 +69,6 @@ class CourierServiceImpl(
 
     override fun getCompletedOrderList(): CourierCompletedOrderListResponse {
         val orderList = orderDAO.findByStatusAndCourierId(OrderStatus.DELIVERED.name, getPrincipal().id)
-        println("$orderList <-------------------------------------")
         val orders = mutableListOf<CourierCompletedResponse>()
 
         orderList.forEach { order ->
@@ -117,17 +103,15 @@ class CourierServiceImpl(
         return user.money
     }
 
-    override fun getMyScore(): CourierScoreRequest{
+    override fun getMyScore(): CourierScoreRequest {
         val rating = ratingDAO.findById(getPrincipal().id).get()
-        println("$rating  <------------------------------- RATING")
         val reviews = reviewDAO.findByCourierId(getPrincipal().id)
-        println("$reviews (---------------------REVIEWS")
 
         if (reviews.isEmpty())
             return CourierScoreRequest(rating.id, rating.totalScore, rating.count)
 
-        reviews.forEach {
-            review -> rating.count += 1
+        reviews.forEach { review ->
+            rating.count += 1
             rating.totalScore += review.rating
         }
 

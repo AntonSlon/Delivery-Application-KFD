@@ -17,14 +17,11 @@ class UserAuthController(private val userAuthService: UserAuthService) {
         = userAuthService.register(userRegisterRequest)
 
     @PostMapping("/confirm")
-    fun confirmRegister(@RequestParam codeUUID: String): AuthCodeResponse{
-        println("$codeUUID - uuid в контроллере")
-    return userAuthService.confirmRegister(codeUUID)}
+    fun confirmRegister(@RequestParam codeUUID: String): AuthCodeResponse
+     = userAuthService.confirmRegister(codeUUID)
 
     @PostMapping("/login")
-    fun loginUser(@RequestBody @Valid userLoginRequest: UserLoginRequest): UserLoginResponse {
-        userAuthService.login(userLoginRequest)
-        return UserLoginResponse("hmmm", "test")
-    }
+    fun loginUser(@RequestBody @Valid userLoginRequest: UserLoginRequest): UserLoginResponse
+        = userAuthService.login(userLoginRequest)
 
 }
