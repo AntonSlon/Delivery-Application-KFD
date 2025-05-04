@@ -102,7 +102,7 @@ class CourierServiceImpl(
             user.money += order.payment.cost
 
         order.payment.status = PaymentStatus.PAID.name
-        courier.status = UserStatus.ONLINE.name
+        courier.status = UserStatus.ONLINE.name 
 
         paymentDAO.save(order.payment)
         courierDAO.save(courier)
