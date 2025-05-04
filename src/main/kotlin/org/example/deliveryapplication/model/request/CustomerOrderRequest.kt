@@ -1,4 +1,4 @@
-package org.example.deliveryapplication.model.response
+package org.example.deliveryapplication.model.request
 
 import java.time.LocalDateTime
 

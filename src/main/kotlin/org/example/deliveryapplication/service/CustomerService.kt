@@ -1,14 +1,11 @@
 package org.example.deliveryapplication.service
 
-import io.jsonwebtoken.JwtBuilder
-import jakarta.servlet.http.HttpSession
-import org.example.deliveryapplication.model.request.CourierUpdateOrderStatusRequest
 import org.example.deliveryapplication.model.request.CustomerConfirmOrderRequest
 import org.example.deliveryapplication.model.request.CustomerCreateOrderRequest
 import org.example.deliveryapplication.model.request.CustomerFeedbackRequest
 import org.example.deliveryapplication.model.response.CustomerConfirmOrderResponse
 import org.example.deliveryapplication.model.response.CustomerCreateOrderResponse
-import org.example.deliveryapplication.model.response.CustomerOrderRequest
+import org.example.deliveryapplication.model.request.CustomerOrderRequest
 
 interface CustomerService {
     fun createOrder(customerCreateOrderRequest: CustomerCreateOrderRequest): CustomerCreateOrderResponse

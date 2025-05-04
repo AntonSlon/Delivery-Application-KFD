@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface OrderDAO: JpaRepository<Order, Long> {
-    fun findByCustomerId(id: Long): Order
+    fun findByIdAndStatus(id: Long, status: String): Order
     fun findByStatus(status: String): MutableList<Order>
     fun findByCustomerIdAndStatus(userId: Long, status: String): MutableList<Order>
     fun findFirstByOrderByIdDesc(): Order

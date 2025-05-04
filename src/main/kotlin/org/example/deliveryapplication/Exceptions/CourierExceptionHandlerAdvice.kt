@@ -7,10 +7,17 @@ import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import java.sql.SQLIntegrityConstraintViolationException
 
+class CourierStatusException : RuntimeException()
+
 @ControllerAdvice
 class CourierExceptionHandlerAdvice {
-//    @ExceptionHandler(SQLIntegrityConstraintViolationException::class)
-//    fun handleException(e: SQLIntegrityConstraintViolationException): ResponseEntity<ApiError> {
-//        val apiError = ApiError(HttpStatus.BAD_REQUEST.value(), e::class.java.simpleName, "Возможен только один отзыв на один заказ")
-//        return ResponseEntity(apiError, HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(CourierStatusException::class)
+    fun handleException(e: CourierStatusException): ResponseEntity<ApiError> {
+        val apiError = ApiError(
+            HttpStatus.BAD_REQUEST.value(),
+            e::class.java.simpleName,
+            "Вы не можете взять сразу несколько заказов"
+        )
+        return ResponseEntity(apiError, HttpStatus.BAD_REQUEST)
+    }
     }

@@ -1,12 +1,15 @@
 package org.example.deliveryapplication.service.Impl
 
 //import org.example.deliveryapplication.database.entity.Rating
+import org.example.deliveryapplication.Exceptions.CourierStatusException
 import org.example.deliveryapplication.database.entity.Order
 import org.example.deliveryapplication.database.repository.*
 import org.example.deliveryapplication.graphhopper.GraphhopperService
 import org.example.deliveryapplication.model.OrderStatus
 import org.example.deliveryapplication.model.PaymentMethod
 import org.example.deliveryapplication.model.PaymentStatus
+import org.example.deliveryapplication.model.UserStatus
+import org.example.deliveryapplication.model.request.CourierScoreRequest
 import org.example.deliveryapplication.model.request.CustomerSelectVehicleRequest
 import org.example.deliveryapplication.model.response.*
 import org.example.deliveryapplication.service.CourierService
@@ -26,8 +29,13 @@ class CourierServiceImpl(
 
 ) : CourierService {
     override fun acceptOrder(orderId: Long): CourierAcceptOrderResponse {
-        val order = orderDAO.findByCustomerIdAndStatus(orderId, OrderStatus.WAITING.name).last()
+        val order = orderDAO.findByIdAndStatus(orderId, OrderStatus.WAITING.name)
         val courier = courierDAO.findById(getPrincipal().id).get()
+
+        if (courier.status == UserStatus.BUSY.name)
+            throw CourierStatusException()
+
+        courier.status = UserStatus.BUSY.name
 
         order.status = OrderStatus.IN_PROGRESS.name
         order.courier = courier
@@ -39,6 +47,7 @@ class CourierServiceImpl(
             ), courier.vehicle.lowercase(Locale.getDefault()), "de", false
         )
 
+        courierDAO.save(courier)
         orderDAO.save(order)
         return CourierAcceptOrderResponse("Заказ принят")
     }
@@ -86,14 +95,17 @@ class CourierServiceImpl(
     override fun updateCurrentOrderStatus() {
         val order = orderDAO.findFirstByOrderByIdDesc()
         val user = userDao.findById(getPrincipal().id).get()
+        val courier = courierDAO.findById(getPrincipal().id).get()
 
         order.status = OrderStatus.DELIVERED.name
         if (order.payment.paymentMethod == PaymentMethod.PROFILE_BALANCE.name)
             user.money += order.payment.cost
 
         order.payment.status = PaymentStatus.PAID.name
+        courier.status = UserStatus.ONLINE.name
 
         paymentDAO.save(order.payment)
+        courierDAO.save(courier)
 
         orderDAO.save(order)
     }

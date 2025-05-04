@@ -16,7 +16,7 @@ import org.example.deliveryapplication.model.request.CustomerCreateOrderRequest
 import org.example.deliveryapplication.model.request.CustomerFeedbackRequest
 import org.example.deliveryapplication.model.response.CustomerConfirmOrderResponse
 import org.example.deliveryapplication.model.response.CustomerCreateOrderResponse
-import org.example.deliveryapplication.model.response.CustomerOrderRequest
+import org.example.deliveryapplication.model.request.CustomerOrderRequest
 import org.example.deliveryapplication.service.CustomerService
 import org.example.deliveryapplication.util.getPrincipal
 import org.springframework.stereotype.Service
