@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/base :: head}">
+    <title>Order Details - Delivery Application</title>
+</head>
+<body>
+    <div th:replace="~{layout/base :: body}">
+        <div th:fragment="content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Order Details</h2>
+                <a th:href="@{/orders}" class="btn btn-outline-primary">Back to Orders</a>
+            </div>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Order Information</h5>
+                            <div class="order-info">
+                                <p><strong>Order ID:</strong> <span th:text="${order.id}">#12345</span></p>
+                                <p><strong>Date:</strong> <span th:text="${#temporals.format(order.date, 'dd-MM-yyyy HH:mm')}">01-01-2024</span></p>
+                                <p><strong>Status:</strong> 
+                                    <span class="badge" th:classappend="${order.status == 'DELIVERED' ? 'bg-success' : 
+                                                                      order.status == 'IN_TRANSIT' ? 'bg-primary' : 
+                                                                      'bg-warning'}"
+                                          th:text="${order.status}">PENDING</span>
+                                </p>
+                                <p><strong>From Address:</strong> <span th:text="${order.fromAddress}">Moscow</span></p>
+                                <p><strong>To Address:</strong> <span th:text="${order.toAddress}">St. Petersburg</span></p>
+                                <p th:if="${order.description}"><strong>Description:</strong> <span th:text="${order.description}">Package description</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Update Status</h5>
+                            <form th:action="@{/orders/{id}/status(id=${order.id})}" method="post">
+                                <div class="mb-3">
+                                    <label for="status" class="form-label">New Status</label>
+                                    <select class="form-select" id="status" name="status">
+                                        <option th:each="status : ${T(org.delivery.model.OrderStatus).values()}"
+                                                th:value="${status}"
+                                                th:text="${status}"
+                                                th:selected="${status == order.status}">PENDING</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Update Status</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Delivery Information</h5>
+                            <div class="delivery-info" th:if="${delivery}">
+                                <p><strong>Courier:</strong> <span th:text="${delivery.courier?.username ?: 'Not assigned'}">John Doe</span></p>
+                                <p><strong>Status:</strong> <span th:text="${delivery.status}">PENDING</span></p>
+                                <p th:if="${delivery.estimatedTime}">
+                                    <strong>Estimated Delivery:</strong> 
+                                    <span th:text="${#temporals.format(delivery.estimatedTime, 'dd-MM-yyyy HH:mm')}">12:00 PM</span>
+                                </p>
+                                <a th:href="@{/delivery/{id}(id=${order.id})}" class="btn btn-info w-100">Track Delivery</a>
+                            </div>
+                            <div class="text-center" th:unless="${delivery}">
+                                <p class="text-muted">No delivery information available</p>
+                                <a th:href="@{/delivery/{id}(id=${order.id})}" class="btn btn-primary w-100">Create Delivery</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

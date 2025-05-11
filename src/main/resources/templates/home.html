@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/base :: head}">
+    <title>Home - Delivery Application</title>
+</head>
+<body>
+    <div th:replace="~{layout/base :: body}">
+        <div th:fragment="content">
+            <div class="jumbotron bg-light p-5 rounded">
+                <h1 class="display-4">Welcome to Delivery Application</h1>
+                <p class="lead">Fast and reliable delivery services at your fingertips.</p>
+                <hr class="my-4">
+                <p>Track your deliveries, manage orders, and stay updated with real-time notifications.</p>
+                <a class="btn btn-primary btn-lg" th:href="@{/orders}" role="button">Get Started</a>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Track Deliveries</h5>
+                            <p class="card-text">Real-time tracking of your deliveries with detailed status updates.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Manage Orders</h5>
+                            <p class="card-text">Create and manage your delivery orders with ease.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Notifications</h5>
+                            <p class="card-text">Stay informed with instant notifications about your deliveries.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

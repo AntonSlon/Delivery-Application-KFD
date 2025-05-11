@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/base :: head}">
+    <title>Orders - Delivery Application</title>
+</head>
+<body>
+    <div th:replace="~{layout/base :: body}">
+        <div th:fragment="content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Orders</h2>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newOrderModal">
+                    Create New Order
+                </button>
+            </div>
+
+            <!-- Orders List -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>From</th>
+                                    <th>To</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="order : ${orders}">
+                                    <td th:text="${order.id}">#12345</td>
+                                    <td th:text="${#temporals.format(order.date, 'dd-MM-yyyy HH:mm')}">01-01-2024</td>
+                                    <td>
+                                        <span class="badge" th:classappend="${order.status == 'DELIVERED' ? 'bg-success' : 
+                                                                          order.status == 'IN_TRANSIT' ? 'bg-primary' : 
+                                                                          'bg-warning'}"
+                                              th:text="${order.status}">PENDING</span>
+                                    </td>
+                                    <td th:text="${order.fromAddress}">Moscow</td>
+                                    <td th:text="${order.toAddress}">St. Petersburg</td>
+                                    <td>
+                                        <a th:href="@{/orders/{id}(id=${order.id})}" class="btn btn-sm btn-info">View</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Order Modal -->
+            <div class="modal fade" id="newOrderModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Create New Order</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form th:action="@{/orders}" method="post">
+                                <div class="mb-3">
+                                    <label for="fromAddress" class="form-label">From Address</label>
+                                    <input type="text" class="form-control" id="fromAddress" name="fromAddress" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="toAddress" class="form-label">To Address</label>
+                                    <input type="text" class="form-control" id="toAddress" name="toAddress" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Description</label>
+                                    <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Create Order</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
