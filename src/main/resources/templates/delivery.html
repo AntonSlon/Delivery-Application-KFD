@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/base :: head}">
+    <title>Delivery Tracking - Delivery Application</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+    <div th:replace="~{layout/base :: body}">
+        <div th:fragment="content">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Delivery Map</h5>
+                            <div id="map" style="height: 400px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Delivery Status</h5>
+                            <div class="delivery-status">
+                                <div class="status-item" th:each="status : ${deliveryStatuses}">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="status-icon me-3" 
+                                             th:classappend="${status.completed ? 'bg-success' : 'bg-secondary'}">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0" th:text="${status.title}">Order Received</h6>
+                                            <small class="text-muted" th:text="${status.time}">10:00 AM</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Delivery Details</h5>
+                            <div class="delivery-info">
+                                <p><strong>Order ID:</strong> <span th:text="${delivery.orderId}">#12345</span></p>
+                                <p><strong>Courier:</strong> <span th:text="${delivery.courierName}">John Doe</span></p>
+                                <p><strong>Phone:</strong> <span th:text="${delivery.courierPhone}">+7 (999) 123-45-67</span></p>
+                                <p><strong>Estimated Delivery:</strong> <span th:text="${delivery.estimatedTime}">12:00 PM</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        // Initialize map
+        const map = L.map('map').setView([55.7558, 37.6173], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Add markers for delivery points
+        const fromPoint = /*[[${delivery.fromCoordinates}]]*/ [55.7558, 37.6173];
+        const toPoint = /*[[${delivery.toCoordinates}]]*/ [59.9343, 30.3351];
+        
+        L.marker(fromPoint).addTo(map).bindPopup('Pickup Location');
+        L.marker(toPoint).addTo(map).bindPopup('Delivery Location');
+        
+        // Add route line
+        L.polyline([fromPoint, toPoint], {color: 'blue'}).addTo(map);
+    </script>
+</body>
+</html> 
