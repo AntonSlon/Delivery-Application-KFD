@@ -29,7 +29,6 @@ class GraphhopperService(
         return graphhopperClient.getRoute(points, profile, locale, calcPoints)
     }
 
-    //колхозное вычисление, в будущем можно улучшить логику рассчета
     fun calculatePrice(customerCreateOrderRequest: CustomerCreateOrderRequest): Int {
         val calc1 = getRoute(
             listOf(customerCreateOrderRequest.startAddress, customerCreateOrderRequest.endAddress),
